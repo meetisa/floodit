@@ -4,8 +4,11 @@ from personal.text import Text
 from quad import Quads
 
 class Panel(Quads):
-    def __init__(self):
-        super().__init__((3, 2), (30, 25), 50)
+    def __init__(self, *file):
+        if file:
+            super().__init__((3, 2), (30, 25), 50, file)
+        else:
+            super().__init__((3, 2), (30, 25), 50)
         self.moves = 0
         self.set_pattern()
         self.click = False
@@ -27,11 +30,14 @@ class Panel(Quads):
 
 
 class Field(Quads):
-    def __init__(self, ease):
+    def __init__(self, ease, *file):
         """ease set the difficulty of the game, maintaining the same
         size for both mode
         """
-        super().__init__((11 * ease, 11 * ease), (210, 25), 50 / ease)
+        if file:
+            super().__init__((11 * ease, 11 * ease), (210, 25), 50 / ease, file)
+        else:
+            super().__init__((11 * ease, 11 * ease), (210, 25), 50 / ease)
         self.set_pattern(randomize=True)
         Quads.color = self.grid[0][0].color
         self.grid[0][0].flooded = True

@@ -21,30 +21,33 @@ class Quad:
 
 
 class Quads:
-    def __init__(self, size, offset, qs):
+    def __init__(self, size, offset, qs, *file):
         """Size here is (rows, cols), while qs is the size of every quad"""
         self.rows, self.cols = range(size[0]), range(size[1])
         coords = lambda x, y: (offset[0] + x*qs, offset[1] + y*qs)
         self.grid = [[Quad((qs, qs), coords(x,y)) for y in self.cols]
                         for x in self.rows]
+        if not file:
+            self.colors = [
+                (66, 135, 245), #Celeste
+                (69, 247, 105), #Verde
+                (227, 158, 68), #Arancione
+                (250, 77, 224), #Fucsia
+                (255, 181, 181), #Rosa
+                (172, 250, 218) #Azzurro verde
+            ]
+        else:
+            with open(file[0][0], 'r') as f:
+                self.colors = list(map(lambda x: tuple(map(int, x.split())),
+                                       f.readlines()))
 
-        self.colors = [
-            (66, 135, 245), #Celeste
-            (69, 247, 105), #Verde
-            (227, 158, 68), #Arancione
-            (250, 77, 224), #Fucsia
-            (255, 181, 181), #Rosa
-            (172, 250, 218) #Azzurro verde
-        ]
-
+    
     def set_pattern(self, randomize=False, *color):
         """The last variable is for set all the grid of the same color"""
         colors = cycle(self.colors)
         for row in self.rows:
             for col in self.cols:
-                if color:
-                    self.grid[row][col].set_color(color)
-                elif randomize:
+                if randomize:
                     self.grid[row][col].set_color(choice(self.colors))
                 else:
                     self.grid[row][col].set_color(next(colors))

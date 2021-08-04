@@ -3,18 +3,31 @@ os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = 'hide'
 import pygame as pg
 import sys
 
+sys.path.append('include')
+
 from personal.text import Text
 from campo import Panel, Field
 
-pg.init()
+while True:
+    try:
+        ease = int(input("1)Easy mode\n2)Difficult mode\n>"))
+        if 0 < ease < 3:
+            break
+    except ValueError:
+        pass
+    print('Risposta non riconosciuta')
 
-ease = int(input("1)Easy mode\n2)Difficult mode\n>"))
+pg.init()
 
 screen = pg.display.set_mode((800, 600))
 pg.display.set_caption('Flood it!')
 
-panel = Panel()
-field = Field(ease)
+if 'colors.txt' in os.listdir(os.path.dirname(__file__)):
+    panel = Panel('colors.txt')
+    field = Field(ease, 'colors.txt')
+else:
+    panel = Panel()
+    field = Field(ease)
 
 clock = pg.time.Clock()
 done = False
